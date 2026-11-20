@@ -21,8 +21,13 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
-// Connect to local MongoDB Server
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/groovy';
+// Connect using the configured MongoDB connection string.
+const MONGO_URI = process.env.MONGO_URI;
+if (!MONGO_URI) {
+    console.error('MONGO_URI environment variable is required.');
+    process.exit(1);
+}
+
 mongoose.connect(MONGO_URI)
   .then(() => console.log('🍃 Connected to MongoDB successfully'))
   .catch((err) => console.error('MongoDB connection error:', err.message));
