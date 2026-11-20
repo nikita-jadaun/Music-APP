@@ -1,9 +1,16 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const youtubedl = require("youtube-dl-exec");
+const path = require('path');
+const fs = require('fs');
 
 const { getAudioUrl, searchYoutube } = require("./ytdlp");
 const authRoutes = require("./routes/auth");
+
+const envFile = path.join(__dirname, '.env');
+if (fs.existsSync(envFile)) {
+    process.loadEnvFile(envFile);
+}
 
 const app = express();
 
@@ -48,8 +55,6 @@ server.on('error', (err) => {
     }
 });
 
-const path = require('path');
-const fs = require('fs');
 const crypto = require('crypto');
 
 const CACHE_DIR = path.join(__dirname, 'cache');
